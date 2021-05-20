@@ -3,11 +3,10 @@
     <h2>Інструкція</h2>
     <ul>
       <li>Тест складається з 84 питань</li>
-      <li>Час на тестування 20 хвилин</li>
       <li>Відповідати можна <b>так</b> або <b>ні</b></li>
     </ul>
   </base-card>
-  <router-link to="/About">
+  <router-link to="/test/0">
     <base-button>Почати тестування</base-button>
   </router-link>
 </template>

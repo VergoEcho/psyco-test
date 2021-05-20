@@ -1,8 +1,10 @@
 <template>
   <div>
-    <h1>
-      <slot></slot>
-    </h1>
+    <router-link to="/">
+      <h1>
+        <slot></slot>
+      </h1>
+    </router-link>
   </div>
 </template>
 
@@ -10,6 +12,10 @@
 h1 {
   font-size: 20px;
   font-weight: bold;
+  color: black;
+}
+a {
+  text-decoration: none;
 }
 div {
   width: 100%;

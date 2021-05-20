@@ -7,6 +7,17 @@ const routes = [
     name: "Home",
     component: Home,
   },
+  {
+    path: "/results",
+    name: "TestResults",
+    component: () => import("../views/TestResults.vue"),
+  },
+  {
+    path: "/test/:questionId",
+    name: "TestForm",
+    component: () => import("../views/TestForm.vue"),
+    props: true,
+  },
 ];
 
 const router = createRouter({

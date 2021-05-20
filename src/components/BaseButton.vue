@@ -15,6 +15,7 @@ button {
 
 button:hover {
   box-shadow: 0 0 0 0 #333;
+  cursor: pointer;
 }
 
 button:active {
