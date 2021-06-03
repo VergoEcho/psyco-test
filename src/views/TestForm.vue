@@ -1,9 +1,9 @@
 <template>
   <section>
-    <base-card>
-      {{ currentQuestionText }}
+    <base-card id="test-card">
+      {{ currentQuestionIndex }}. {{ currentQuestionText }}
     </base-card>
-    <div v-if="Number(questionId) < test.length">
+    <div class="actions">
       <base-button @click="checkQuestion(true)">Так</base-button>
       <base-button @click="checkQuestion(false)">Ні</base-button>
     </div>
@@ -13,7 +13,7 @@
 <script>
 export default {
   props: {
-    questionId: {
+    questionIndex: {
       required: true,
     },
   },
@@ -21,44 +21,37 @@ export default {
     return {
       currentQuestion: null,
       currentQuestionText: "",
-      test: [
-        {
-          question:
-            "1. Іноді мені в голову приходять такі негарні думки, що краще про них нікому не розповідати.",
-          answer: false,
-          type: "frankness",
-        },
-        {
-          question:
-            "2. В дитинстві у мене була така компанія, що всі старались завжди й в усьому стояти один за одного.",
-          answer: false,
-          type: "unbalanced",
-        },
-        {
-          question:
-            "3. Іноді у мене бувають приступи сміху або плачу, які я ніяк не можу подолати.",
-          answer: true,
-          type: "unbalanced",
-        },
-      ],
+      currentQuestionIndex: "",
+      test: [],
+      testLength: null,
       frankness: 0,
       unbalanced: 0,
     };
   },
   watch: {
-    questionId(newId) {
+    questionIndex(newId) {
       this.loadQuestion(Number(newId));
     },
   },
+
   created() {
-    this.loadQuestion(Number(this.questionId));
+    console.log("index", this.questionIndex);
+    this.loadQuestion(Number(this.questionIndex));
   },
   methods: {
-    loadQuestion(id) {
-      this.currentQuestion = this.test[id];
-      this.currentQuestionText = this.currentQuestion.question;
+    async loadQuestion(index) {
+      const currentQuestion = await this.$store.dispatch("getQuestionById", {
+        index,
+      });
+      const testLength = await this.$store.dispatch("getTestLength");
+      console.log("testForm", currentQuestion);
+      this.currentQuestion = currentQuestion;
+      this.currentQuestionText = currentQuestion.question;
+      this.currentQuestionIndex = currentQuestion.index + 1;
+      this.testLength = testLength;
     },
     checkQuestion(answer) {
+      console.log("check", this.testLength);
       if (answer === this.currentQuestion.answer) {
         if (answer) {
           this[this.currentQuestion.type]++;
@@ -67,8 +60,8 @@ export default {
         }
       }
 
-      if (Number(this.questionId) < this.test.length - 1) {
-        this.$router.push("/test/" + (Number(this.questionId) + 1));
+      if (Number(this.questionIndex) < this.testLength - 1) {
+        this.$router.push("/test/" + (Number(this.questionIndex) + 1));
       } else {
         this.$router.push("/results");
         console.log(
@@ -87,8 +80,12 @@ export default {
 button {
   margin: 20px;
 }
-div {
+.actions {
   display: flex;
   justify-content: center;
+}
+
+#test-card {
+  min-width: 255px;
 }
 </style>

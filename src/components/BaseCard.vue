@@ -7,7 +7,7 @@
 <style scoped>
 .base-card_wrapper {
   display: flex;
-  padding: 10px 20px;
+  padding: 20px;
   border-radius: 5px;
   border: 2px solid #333;
   position: relative;

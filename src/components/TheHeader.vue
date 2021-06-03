@@ -13,6 +13,7 @@ h1 {
   font-size: 20px;
   font-weight: bold;
   color: black;
+  text-align: center;
 }
 a {
   text-decoration: none;
@@ -22,6 +23,6 @@ div {
   display: flex;
   align-items: center;
   justify-content: center;
-  margin: 20px 0px;
+  margin: 20px 0;
 }
 </style>
