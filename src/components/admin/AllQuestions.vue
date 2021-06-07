@@ -1,31 +1,39 @@
 <template>
+  <section class="reverse">
+
+  </section>
   <base-card class="question" v-for="question in questions" :key="question._id">
     {{ question.index + 1 }}. {{ question.question }}
     <section>
-      <div v-if="question.type === 'frankness'">відвертість</div>
-      <div v-else>нпн</div>
-      <div v-if="question.answer">так</div>
-      <div v-else>ні</div>
+      <base-badge
+        >{{ question.type === "frankness" ? "відвертість" : "нпн" }}
+      </base-badge>
+      <base-badge>{{ question.answer ? "так" : "ні" }}</base-badge>
     </section>
   </base-card>
 </template>
 
 <script>
 import BaseCard from "@/components/BaseCard";
+
 export default {
   components: { BaseCard },
-  data() {
-    return {
-      questions: [],
-    };
+  computed: {
+    questions() {
+      console.log(this.$store.getters.test);
+      return this.$store.getters.test;
+    },
+    reverse() {
+      console.log(this.$store.getters.isTestReversed);
+      return this.$store.getters.isTestReversed;
+    },
   },
-  beforeMount() {
+  created() {
     this.loadQuestions();
   },
   methods: {
     async loadQuestions() {
-      const questions = await this.$store.dispatch("getAllQuestions");
-      this.questions = questions.data;
+      await this.$store.dispatch("getAllQuestions");
     },
   },
 };
@@ -43,10 +51,43 @@ export default {
   justify-content: space-between;
   margin-top: 15px;
 }
+
 .question section div {
   border: 1px solid black;
   border-radius: 5px;
   padding: 5px 10px;
   font-style: italic;
+}
+
+.reverse {
+  font-size: 16px;
+  display: flex;
+  margin-bottom: 15px;
+  white-space: nowrap;
+}
+
+.reverse div {
+  margin: 5px 5px;
+  padding: 10px;
+}
+
+.reverse div input {
+  display: none;
+}
+
+.reverse div label {
+  cursor: pointer;
+  border: 2px solid transparent;
+  box-sizing: border-box;
+  border-radius: 5px;
+  padding: 10px 20px;
+}
+
+input:checked + label {
+  border: 2px solid black;
+}
+
+input:hover + label {
+  border: 2px solid gray;
 }
 </style>

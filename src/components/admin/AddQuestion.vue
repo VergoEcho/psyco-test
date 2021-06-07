@@ -1,5 +1,5 @@
 <template>
-  <textarea v-model="question" placeholder="Введіть питання...">
+  <textarea :class="{error: formIsInvalid}" @blur="resetValidation" v-model.trim="question" placeholder="Введіть питання...">
   </textarea>
   <section>
     <div>
@@ -57,18 +57,28 @@ export default {
       question: "",
       answer: true,
       type: "unbalanced",
+      formIsInvalid: false,
     };
   },
   methods: {
     createQuestion() {
+      this.formIsInvalid = false;
+      if (this.question === "") {
+        this.formIsInvalid = true;
+        return;
+      }
       const newQuestion = {
         question: this.question,
         answer: this.answer,
         type: this.type,
       };
+      console.log(newQuestion);
       this.$store.dispatch("createQuestion", newQuestion);
       this.question = "";
     },
+    resetValidation() {
+      this.formIsInvalid = false;
+    }
   },
 };
 </script>
@@ -120,7 +130,11 @@ input:hover + label {
   border: 2px solid gray;
 }
 
-button {
+button, p {
   margin-top: 5px;
+}
+
+.error {
+  border-color: red;
 }
 </style>

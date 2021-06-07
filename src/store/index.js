@@ -9,21 +9,29 @@ const store = createStore({
     return {
       testLength: null,
       test: [],
+      userBlank: {},
     };
   },
   mutations: {
-    setTestLength(state, length) {
-      state.testLength = length;
-    },
     setTest(state, test) {
       state.test = test;
     },
+    setUserAnswerToBlank(state, {index, answer}) {
+      state.userBlank[index] = answer;
+
+    },
   },
   actions: {
-    async getAllQuestions() {
+    async getAllQuestions(context) {
       try {
-        console.log("all");
-        return await axios.get("/questions/all");
+        let test = await context.getters.test;
+        if (test.length === 0) {
+          const test = await axios.get("/questions/all");
+          context.commit("setTest", test.data);
+          return test.data;
+        } else {
+          return test;
+        }
       } catch (err) {
         console.log(err);
       }
@@ -33,7 +41,6 @@ const store = createStore({
         if (context.getters.testLength === null) {
           const length = await axios.get("/questions/length");
           context.commit("setTestLength", length);
-          console.log("store", context.getters.testLength);
           return length.data;
         } else {
           return context.getters.testLength;
@@ -47,12 +54,9 @@ const store = createStore({
         let test = await context.getters.test;
         if (test.length === 0) {
           const test = await context.dispatch("getAllQuestions");
-          console.log("storeId", test.data);
-          context.commit("setTestLength", test.data.length);
-          context.commit("setTest", test.data);
-          return test.data[index];
+          context.commit("setTest", test);
+          return test[index];
         } else {
-          console.log("else");
           return test[index];
         }
       } catch (err) {
@@ -66,14 +70,30 @@ const store = createStore({
         console.log(err);
       }
     },
+    async addUserAnswerToBlank(context, answer) {
+      await context.commit('setUserAnswerToBlank', answer)
+      const userBlank = await context.getters.userBlank
+      localStorage.setItem("userBlank", JSON.stringify(userBlank))
+      console.log(localStorage.getItem("userBlank"))
+    }
   },
   getters: {
-    testLength(store) {
-      return store.testLength;
+    testLength(state) {
+      return state.test.length;
     },
-    test(store) {
-      return store.test;
+    test(state) {
+      return state.test;
     },
+    isTestReversed(state, getters) {
+      if (getters.testLength > 0) {
+        return state.test[0].index !== 0;
+      } else {
+        return false;
+      }
+    },
+    userBlank(state) {
+      return state.userBlank
+    }
   },
 });
 

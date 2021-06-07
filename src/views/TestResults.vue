@@ -7,17 +7,6 @@
   </router-link>
 </template>
 
-<script>
-export default {
-  // created() {
-  //   console.log("axios");
-  //   this.axios.get("http://localhost:3080/").then((data) => {
-  //     console.log(data);
-  //   });
-  // },
-};
-</script>
-
 <style scoped>
 h2 {
   justify-self: center;

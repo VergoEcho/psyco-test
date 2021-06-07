@@ -23,53 +23,53 @@ export default {
       currentQuestionText: "",
       currentQuestionIndex: "",
       test: [],
-      testLength: null,
-      frankness: 0,
-      unbalanced: 0,
     };
+  },
+  computed: {
+    testLength() {
+      return this.$store.getters.testLength;
+    },
   },
   watch: {
     questionIndex(newId) {
-      this.loadQuestion(Number(newId));
+      this.loadQuestion(+newId);
     },
   },
-
   created() {
-    console.log("index", this.questionIndex);
-    this.loadQuestion(Number(this.questionIndex));
+    this.loadQuestion(+this.questionIndex);
   },
   methods: {
     async loadQuestion(index) {
       const currentQuestion = await this.$store.dispatch("getQuestionById", {
         index,
       });
-      const testLength = await this.$store.dispatch("getTestLength");
-      console.log("testForm", currentQuestion);
       this.currentQuestion = currentQuestion;
       this.currentQuestionText = currentQuestion.question;
       this.currentQuestionIndex = currentQuestion.index + 1;
-      this.testLength = testLength;
     },
-    checkQuestion(answer) {
-      console.log("check", this.testLength);
-      if (answer === this.currentQuestion.answer) {
-        if (answer) {
-          this[this.currentQuestion.type]++;
-        } else {
-          this[this.currentQuestion.type]--;
-        }
-      }
+    async checkQuestion(answer) {
+      // if (answer === this.currentQuestion.answer) {
+      //   if (answer) {
+      //     this[this.currentQuestion.type]++;
+      //   } else {
+      //     this[this.currentQuestion.type]--;
+      //   }
+      // }
+      this.$store.dispatch("addUserAnswerToBlank", {
+        index: this.questionIndex,
+        answer: answer,
+      });
 
-      if (Number(this.questionIndex) < this.testLength - 1) {
-        this.$router.push("/test/" + (Number(this.questionIndex) + 1));
+      if (+this.questionIndex < this.testLength - 1) {
+        this.$router.push("/test/" + (+this.questionIndex + 1));
       } else {
-        this.$router.push("/results");
+        const userBlank = await localStorage.getItem("userBlank");
         console.log(
-          "frankness",
-          this.frankness,
-          "\nunbalanced",
-          this.unbalanced
+          "userBlankFromLocalStorage",
+          userBlank
         );
+        console.log("userBlank", this.$store.getters.userBlank);
+        this.$router.push("/results");
       }
     },
   },

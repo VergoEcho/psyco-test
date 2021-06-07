@@ -32,9 +32,11 @@ button {
   border-color: rgb(118, 118, 118);
 }
 
-button:hover {
-  box-shadow: 0 0 0 0 #333;
-  cursor: pointer;
+@media(hover: hover) and (pointer: fine) {
+  button:hover, button:active {
+    box-shadow: 0 0 0 0 #333;
+    cursor: pointer;
+  }
 }
 
 button:active {
