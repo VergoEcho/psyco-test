@@ -1,6 +1,6 @@
 import Axios from "axios";
 const axios = Axios.create({
-  baseURL: "http://localhost:8080/api",
+  baseURL: "https://nervous-mental-stability-test.herokuapp.com/api",
 });
 
 export default {
