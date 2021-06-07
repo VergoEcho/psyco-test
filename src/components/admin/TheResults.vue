@@ -1,3 +1,0 @@
-<template>
-  The Results
-</template>

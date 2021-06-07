@@ -12,7 +12,8 @@
   border: 2px solid #333;
   position: relative;
   width: calc(100% - 40px);
-  max-width: 380px;
+  /*max-width: 380px;*/
+  max-width: 302px;
   min-height: 150px;
 }
 </style>

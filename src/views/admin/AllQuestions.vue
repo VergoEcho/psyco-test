@@ -1,8 +1,11 @@
 <template>
-  <section class="reverse">
-
-  </section>
-  <base-card class="question" v-for="question in questions" :key="question._id">
+  <div v-if="loading">Завантаження питань...</div>
+  <base-card
+    v-else
+    class="question"
+    v-for="question in questions.reverse()"
+    :key="question._id"
+  >
     {{ question.index + 1 }}. {{ question.question }}
     <section>
       <base-badge
@@ -18,9 +21,13 @@ import BaseCard from "@/components/BaseCard";
 
 export default {
   components: { BaseCard },
+  data() {
+    return {
+      loading: false,
+    };
+  },
   computed: {
     questions() {
-      console.log(this.$store.getters.test);
       return this.$store.getters.test;
     },
     reverse() {
@@ -33,7 +40,9 @@ export default {
   },
   methods: {
     async loadQuestions() {
+      this.loading = true;
       await this.$store.dispatch("getAllQuestions");
+      this.loading = false;
     },
   },
 };
@@ -50,13 +59,6 @@ export default {
   display: flex;
   justify-content: space-between;
   margin-top: 15px;
-}
-
-.question section div {
-  border: 1px solid black;
-  border-radius: 5px;
-  padding: 5px 10px;
-  font-style: italic;
 }
 
 .reverse {

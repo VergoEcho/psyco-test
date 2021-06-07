@@ -1,5 +1,5 @@
 import { createRouter, createWebHistory } from "vue-router";
-import Home from "./views/Home.vue";
+import Home from "./views/test/TheHome.vue";
 
 const routes = [
   {
@@ -8,15 +8,20 @@ const routes = [
     component: Home,
   },
   {
-    path: "/results",
-    name: "TestResults",
-    component: () => import("./views/TestResults.vue"),
+    path: "/auth",
+    name: "UserAuth",
+    component: () => import("./views/test/TestAuth"),
   },
   {
     path: "/test/:questionIndex",
     name: "TestForm",
-    component: () => import("./views/TestForm.vue"),
+    component: () => import("./views/test/TestForm.vue"),
     props: true,
+  },
+  {
+    path: "/results",
+    name: "TestResults",
+    component: () => import("./views/test/TestResults.vue"),
   },
   {
     path: "/admin",
@@ -25,17 +30,22 @@ const routes = [
     children: [
       {
         path: "",
-        component: () => import("./components/admin/TheResults"),
+        component: () => import("./views/admin/TheResults"),
       },
       {
         path: "addQuestion",
-        component: () => import("./components/admin/AddQuestion"),
+        component: () => import("./views/admin/AddQuestion"),
       },
       {
         path: "allQuestions",
-        component: () => import("./components/admin/AllQuestions"),
+        component: () => import("./views/admin/AllQuestions"),
       },
     ],
+  },
+  {
+    path: "/:notFound(.*)",
+    name: "NotFound",
+    component: () => import("./views/NotFound"),
   },
 ];
 

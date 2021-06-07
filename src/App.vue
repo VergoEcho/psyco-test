@@ -1,14 +1,20 @@
 <template>
   <Header>Оцінка рівня нервово-психічної стійкості</Header>
   <router-view />
+  <test-user />
 </template>
 
 <script>
 import Header from "./components/TheHeader";
+import TestUser from "./components/TestUser";
 
 export default {
   components: {
     Header,
+    TestUser,
+  },
+  created() {
+    this.$store.dispatch("loadUserFromLocalStorage");
   },
 };
 </script>
