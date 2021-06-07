@@ -34,7 +34,7 @@ connect(
 let allowedOrigins = [
   "http://localhost:8080",
   "http://localhost:8081",
-  "http://yourapp.com",
+  "https://nervous-mental-stability-test.herokuapp.com/",
 ];
 
 let corsOptions = {
