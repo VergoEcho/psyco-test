@@ -7,8 +7,12 @@
       <div class="loader" v-else>Завантаження...</div>
     </base-card>
     <div class="actions">
-      <base-button :disabled="loading" @click="checkQuestion(true)">Так</base-button>
-      <base-button :disabled="loading" @click="checkQuestion(false)">Ні</base-button>
+      <base-button :disabled="loading" @click="checkQuestion(true)"
+        >Так</base-button
+      >
+      <base-button :disabled="loading" @click="checkQuestion(false)"
+        >Ні</base-button
+      >
     </div>
   </section>
 </template>
