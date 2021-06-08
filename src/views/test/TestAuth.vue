@@ -131,12 +131,16 @@ h2 {
 }
 .input-group {
   margin: 5px 0;
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
 }
 .input-group input {
   margin-left: 10px;
   padding: 5px;
   border-radius: 5px;
   border: 1px solid black;
+  width: 138px;
 }
 .error input {
   border-color: red;

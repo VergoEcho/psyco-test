@@ -72,7 +72,6 @@ export default {
         answer: this.answer,
         type: this.type,
       };
-      console.log(newQuestion);
       this.$store.dispatch("createQuestion", newQuestion);
       this.question = "";
     },
