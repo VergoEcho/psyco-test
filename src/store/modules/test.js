@@ -69,9 +69,9 @@ export default {
     },
     async createQuestion(context, { question, type, answer }) {
       try {
-        return await axios.post("/questions", { question, type, answer });
+        return await axios.post("/questions/", { question, type, answer });
       } catch (err) {
-        console.log(err);
+        console.log("error", err);
       }
     },
     async addUserAnswerToBlank(context, { index, answer }) {
