@@ -1,6 +1,7 @@
 import Axios from "axios";
 const axios = Axios.create({
   baseURL: "https://nervous-mental-stability-test.herokuapp.com/api",
+  // baseURL: "http://localhost:8080/api",
 });
 
 export default {
@@ -8,12 +9,16 @@ export default {
     return {
       testLength: null,
       test: [],
+      testReversed: [],
       testResults: [],
     };
   },
   mutations: {
     setTest(state, test) {
       state.test = test;
+    },
+    setTestReversed(state, test) {
+      state.testReversed = test;
     },
     setTestResults(state, results) {
       state.testResults = results;
@@ -31,7 +36,21 @@ export default {
           return test;
         }
       } catch (err) {
-        console.log(err);
+        alert(err);
+      }
+    },
+    async getAllQuestionsReversed(context) {
+      try {
+        let test = await context.getters.testReversed;
+        if (test.length === 0) {
+          const test = await axios.get("/questions/allReversed");
+          context.commit("setTestReversed", test.data);
+          return test.data;
+        } else {
+          return test;
+        }
+      } catch (err) {
+        alert(err);
       }
     },
     async getQuestionById(context, { index }) {
@@ -89,10 +108,14 @@ export default {
       await axios.post("/questions/saveTestResults", { user, results });
     },
     async loadTestResults(context) {
-      const results = context.getters.testResults;
-      if (results.length === 0) {
-        const results = await axios.get("/questions/testResults");
-        context.commit("setTestResults", results.data);
+      try {
+        const results = context.getters.testResults;
+        if (results.length === 0) {
+          const results = await axios.get("/questions/testResults");
+          context.commit("setTestResults", results.data);
+        }
+      } catch (error) {
+        alert(error);
       }
     },
   },
@@ -103,12 +126,8 @@ export default {
     test(state) {
       return state.test;
     },
-    isTestReversed(state, getters) {
-      if (getters.testLength > 0) {
-        return state.test[0].index !== 0;
-      } else {
-        return false;
-      }
+    testReversed(state) {
+      return state.testReversed;
     },
     testResults(state) {
       return state.testResults;

@@ -40,4 +40,9 @@ router.get("/all", async (req, res) => {
   res.json(test).status(200);
 });
 
+router.get("/allReversed", async (req, res) => {
+  const test = await Question.find().sort({ index: -1 });
+  res.json(test).status(200);
+});
+
 module.exports = router;

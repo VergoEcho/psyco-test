@@ -3,7 +3,7 @@
   <base-card
     v-else
     class="question"
-    v-for="question in questions.reverse()"
+    v-for="question in questions"
     :key="question._id"
   >
     {{ question.index + 1 }}. {{ question.question }}
@@ -28,11 +28,7 @@ export default {
   },
   computed: {
     questions() {
-      return this.$store.getters.test;
-    },
-    reverse() {
-      console.log(this.$store.getters.isTestReversed);
-      return this.$store.getters.isTestReversed;
+      return this.$store.getters.testReversed;
     },
   },
   created() {
@@ -41,7 +37,7 @@ export default {
   methods: {
     async loadQuestions() {
       this.loading = true;
-      await this.$store.dispatch("getAllQuestions");
+      await this.$store.dispatch("getAllQuestionsReversed");
       this.loading = false;
     },
   },
