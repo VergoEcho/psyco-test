@@ -69,7 +69,7 @@ if (process.env.NODE_ENV === "production") {
 app.use("/api/questions", questionRoute);
 
 // set port, listen for requests
-const PORT = process.env.PORT || 8080 || 8081;
+const PORT = process.env.PORT || 443 || 80 || 8081;
 
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}.`);
