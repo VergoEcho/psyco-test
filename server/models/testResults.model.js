@@ -5,6 +5,11 @@ const resultsSchema = new Schema({
     type: Date,
     default: Date.now,
   },
+  email: {
+    type: String,
+    unique: true,
+    required: true,
+  },
   surname: {
     type: String,
     required: true,
@@ -14,6 +19,18 @@ const resultsSchema = new Schema({
     required: true,
   },
   patronymic: {
+    type: String,
+    required: true,
+  },
+  birthday: {
+    type: String,
+    required: true,
+  },
+  phone: {
+    type: String,
+    required: true,
+  },
+  group: {
     type: String,
     required: true,
   },

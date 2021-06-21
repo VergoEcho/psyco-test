@@ -118,6 +118,14 @@ export default {
         alert(error);
       }
     },
+    async removeResult(context, id) {
+      let testResults = context.getters.testResults;
+      testResults = await testResults.filter((result) => {
+        if (result._id === id) return false;
+      });
+      await axios.delete(`questions/testResults/${id}`);
+      context.commit("setTestResults", testResults);
+    },
   },
   getters: {
     testLength(state) {

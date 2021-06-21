@@ -4,11 +4,16 @@
     <result-item
       v-for="result in results"
       :key="result._id"
+      :id="result._id"
       :surname="result.surname"
       :name="result.name"
       :patronymic="result.patronymic"
       :unbalanced="result.unbalanced"
       :frankness="result.frankness"
+      :birthday="result.birthday"
+      :email="result.email"
+      :phone="result.phone"
+      :group="result.group"
     />
   </div>
 </template>

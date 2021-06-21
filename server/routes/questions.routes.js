@@ -17,7 +17,12 @@ router.post("/", async (req, res) => {
 
 router.post("/saveTestResults", async (req, res) => {
   try {
-    const userResults = { ...req.body.user, ...req.body.results };
+    const userResults = {
+      ...req.body.user,
+      ...req.body.results,
+      email: "temporary@mail.com",
+    };
+    console.log(userResults);
     const result = new Result(userResults);
     await result.save();
     res.sendStatus(201);
@@ -26,10 +31,23 @@ router.post("/saveTestResults", async (req, res) => {
   }
 });
 
+// router.delete("/testResults", async (req, res) => {
+//
+// })
+
 router.get("/testResults", async (req, res) => {
   try {
-    const results = await Result.find();
+    const results = await Result.find().sort({ date: -1 });
     res.json(results).status(200);
+  } catch (error) {
+    res.status(500).json(error);
+  }
+});
+
+router.delete("/testResults/:id", async (req, res) => {
+  try {
+    await Result.deleteOne({ _id: req.params.id });
+    res.sendStatus(200);
   } catch (error) {
     res.status(500).json(error);
   }
