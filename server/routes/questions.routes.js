@@ -29,7 +29,7 @@ router.post("/saveTestResults", async (req, res) => {
     console.log('after save');
     res.sendStatus(201);
   } catch (error) {
-    print('error: ',error)
+    console.log('error: ',error)
     res.status(500).json(error);
   }
 });
