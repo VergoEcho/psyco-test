@@ -24,9 +24,12 @@ router.post("/saveTestResults", async (req, res) => {
     };
     console.log(userResults);
     const result = new Result(userResults);
+    console.log('before save');
     await result.save();
+    console.log('after save');
     res.sendStatus(201);
   } catch (error) {
+    print('error: ',error)
     res.status(500).json(error);
   }
 });
