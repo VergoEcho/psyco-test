@@ -1,18 +1,42 @@
 const { Router } = require("express");
 const router = Router();
+const bcrypt = require("bcrypt");
+
 const Question = require("../models/questions.model");
 const Result = require("../models/testResults.model");
 
-router.post("/", async (req, res) => {
-  const index = await Question.countDocuments();
-  const question = new Question({
-    index,
-    question: req.body.question,
-    type: req.body.type,
-    answer: req.body.answer,
-  });
-  await question.save();
-  res.sendStatus(201);
+const saltRounds = 10;
+
+router.post("/createUser", async (req, res) => {
+  try {
+    console.log("b-mail ", req.body.email);
+    const results = await Result.find();
+
+    await results.forEach((result) => {
+      if (result.email === req.body.email) {
+        console.log("User is already in database!");
+        res.sendStatus(409);
+      }
+    });
+
+    const invitationLink = await bcrypt.hash(req.body.email, saltRounds);
+
+    console.log("il", invitationLink);
+
+    const newUser = {
+      email: req.body.email,
+      invitationLink: invitationLink,
+    };
+    console.log("newUser = ", newUser);
+    const newResult = new Result(newUser);
+
+    await newResult.save();
+
+    res.sendStatus(201);
+  } catch (error) {
+    console.log("error: ", error);
+    res.status(500).json(error);
+  }
 });
 
 router.post("/saveTestResults", async (req, res) => {
@@ -24,12 +48,12 @@ router.post("/saveTestResults", async (req, res) => {
     };
     console.log(userResults);
     const result = new Result(userResults);
-    console.log('before save');
+    console.log("before save");
     await result.save();
-    console.log('after save');
+    console.log("after save");
     res.sendStatus(201);
   } catch (error) {
-    console.log('error: ',error)
+    console.log("error: ", error);
     res.status(500).json(error);
   }
 });

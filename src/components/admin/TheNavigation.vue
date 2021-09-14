@@ -2,7 +2,7 @@
   <div>
     <router-link to="/admin/">Результати</router-link>
     <router-link to="/admin/allQuestions">Питання</router-link>
-    <router-link to="/admin/addQuestion">Створити</router-link>
+    <router-link to="/admin/addUser">Створити</router-link>
   </div>
 </template>
 

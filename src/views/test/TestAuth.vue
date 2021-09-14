@@ -6,56 +6,59 @@
         <div class="input-group" :class="{ error: surname.isInvalid }">
           <label for="surname">Прізвище</label>
           <input
-              @blur="clearValidity('surname')"
-              type="text"
-              id="surname"
-              v-model.trim="surname.value"
+            @blur="clearValidity('surname')"
+            type="text"
+            id="surname"
+            v-model.trim="surname.value"
           />
         </div>
         <div class="input-group" :class="{ error: name.isInvalid }">
           <label for="name">Ім'я</label>
           <input
-              @blur="clearValidity('name')"
-              type="text"
-              id="name"
-              v-model.trim="name.value"
+            @blur="clearValidity('name')"
+            type="text"
+            id="name"
+            v-model.trim="name.value"
           />
         </div>
         <div class="input-group" :class="{ error: patronymic.isInvalid }">
           <label for="patronymic">По батькові</label>
           <input
-              @blur="clearValidity('patronymic')"
-              type="text"
-              id="patronymic"
-              v-model.trim="patronymic.value"
+            @blur="clearValidity('patronymic')"
+            type="text"
+            id="patronymic"
+            v-model.trim="patronymic.value"
           />
         </div>
         <div class="input-group" :class="{ error: birthday.isInvalid }">
           <label for="birthday">Рік народження</label>
           <input
-              @blur="clearValidity('birthday')"
-              type="date"
-              id="birthday"
-              v-model.trim="birthday.value"
+            @blur="clearValidity('birthday')"
+            type="date"
+            id="birthday"
+            v-model.trim="birthday.value"
           />
         </div>
         <div class="input-group" :class="{ error: phone.isInvalid }">
           <label for="phone">Телефон</label>
           <input
-              @focus="addPlusToPhone"
-              @blur="removePlusFromPhone(); clearValidity('phone')"
-              type="tel"
-              id="phone"
-              v-model.trim.number="phone.value"
+            @focus="addPlusToPhone"
+            @blur="
+              removePlusFromPhone();
+              clearValidity('phone');
+            "
+            type="tel"
+            id="phone"
+            v-model.trim.number="phone.value"
           />
         </div>
         <div class="input-group" :class="{ error: group.isInvalid }">
           <label for="group">Группа</label>
           <input
-              @blur="clearValidity('group')"
-              type="text"
-              id="group"
-              v-model.trim.number="group.value"
+            @blur="clearValidity('group')"
+            type="text"
+            id="group"
+            v-model.trim.number="group.value"
           />
         </div>
       </div>
@@ -65,8 +68,7 @@
     </base-card>
     <base-button v-if="user" @click="startTest" type="button">
       Продовжити з поточним користувачем
-    </base-button
-    >
+    </base-button>
     <base-button> Авторизуватись</base-button>
   </form>
 </template>
@@ -89,15 +91,15 @@ export default {
       },
       birthday: {
         value: "",
-        isInvalid: false
+        isInvalid: false,
       },
       phone: {
         value: "",
-        isInvalid: false
+        isInvalid: false,
       },
       group: {
         value: "",
-        isInvalid: false
+        isInvalid: false,
       },
       formIsInvalid: false,
     };
@@ -115,18 +117,18 @@ export default {
         return;
       }
 
-      const user = await {
+      const user = {
         surname: this.surname.value,
         name: this.name.value,
         patronymic: this.patronymic.value,
         birthday: this.birthday.value,
         phone: this.phone.value,
-        group: this.group.value
+        group: this.group.value,
       };
 
       await this.$store.dispatch("authUser", user);
 
-      this.startTest()
+      this.startTest();
     },
     validateForm() {
       this.formIsInvalid = false;
@@ -163,14 +165,14 @@ export default {
     },
     addPlusToPhone() {
       if (this.phone.value === "") {
-        this.phone.value = "+"
+        this.phone.value = "+";
       }
     },
     removePlusFromPhone() {
       if (this.phone.value === "+") {
-        this.phone.value = ""
+        this.phone.value = "";
       }
-    }
+    },
   },
 };
 </script>

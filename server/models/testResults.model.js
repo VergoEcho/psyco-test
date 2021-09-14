@@ -1,46 +1,46 @@
 const { Schema, model } = require("mongoose");
 
 const resultsSchema = new Schema({
-  date: {
-    type: Date,
-    default: Date.now,
-  },
   email: {
     type: String,
     unique: true,
     required: true,
   },
-  surname: {
+  invitationLink: {
     type: String,
     required: true,
+  },
+  passed: {
+    type: Boolean,
+    default: false,
+  },
+  date: {
+    type: Date,
+    default: Date.now,
+  },
+  surname: {
+    type: String,
   },
   name: {
     type: String,
-    required: true,
   },
   patronymic: {
     type: String,
-    required: true,
   },
   birthday: {
     type: String,
-    required: true,
   },
   phone: {
     type: String,
-    required: true,
   },
   group: {
     type: String,
-    required: true,
   },
   frankness: {
     type: Number,
-    required: true,
   },
   unbalanced: {
     type: Number,
-    required: true,
   },
 });
 

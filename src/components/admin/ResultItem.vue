@@ -9,7 +9,7 @@
       </div>
     </dialog>
   </teleport>
-  <base-card class="result">
+  <base-card class="result" v-if="passed">
     <h3>{{ surname }} {{ name }} {{ patronymic }}</h3>
     <div class="row mt">
       <span><b>ДН:</b> {{ formattedBirthday }}</span>
@@ -25,12 +25,25 @@
     </section>
     <base-button @click="openDeleteDialog">Видалити результат</base-button>
   </base-card>
+  <base-card class="result" v-else>
+    <h3>{{ email }}</h3>
+    <div class="row mt">
+      <span class="wrap"
+        ><b>Запрошення: </b>
+        <a class="buffer" :ref="id" @click="addToClipboard(invitationLink, id)"
+          >копіювати у буфер
+        </a>
+      </span>
+    </div>
+  </base-card>
 </template>
 
 <script>
 export default {
   props: [
     "id",
+    "passed",
+    "invitationLink",
     "surname",
     "name",
     "patronymic",
@@ -108,6 +121,13 @@ export default {
       this.$store.dispatch("removeResult", this.id);
       this.closeDeleteDialog();
     },
+    addToClipboard(link, id) {
+      navigator.clipboard.writeText(
+        window.location.origin + "/?invitationLink=" + link
+      );
+      console.log(this.$refs[id]);
+      this.$refs[id].textContent = "завантажено у буфер";
+    },
   },
 };
 </script>
@@ -155,5 +175,14 @@ dialog {
   left: 0;
   right: 0;
   background: #333333aa;
+}
+
+.buffer {
+  cursor: pointer;
+  color: gray;
+}
+
+.buffer:hover {
+  text-decoration: underline;
 }
 </style>

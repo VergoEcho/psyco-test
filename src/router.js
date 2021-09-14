@@ -1,11 +1,25 @@
 import { createRouter, createWebHistory } from "vue-router";
 import Home from "./views/test/TheHome.vue";
+import store from "./store/index";
 
 const routes = [
   {
     path: "/",
     name: "Home",
     component: Home,
+    // eslint-disable-next-line no-unused-vars
+    beforeEnter: async (to) => {
+      console.log(to.query.invitationLink);
+      const allowed = await store.dispatch(
+        "checkUser",
+        to.query.invitationLink
+      );
+      console.log(allowed);
+      console.log(localStorage.getItem("invitationLink"));
+      if (allowed === false) {
+        return { name: "Uninvited" };
+      }
+    },
   },
   {
     path: "/auth",
@@ -33,14 +47,19 @@ const routes = [
         component: () => import("./views/admin/TheResults"),
       },
       {
-        path: "addQuestion",
-        component: () => import("./views/admin/AddQuestion"),
+        path: "addUser",
+        component: () => import("./views/admin/AddUser"),
       },
       {
         path: "allQuestions",
         component: () => import("./views/admin/AllQuestions"),
       },
     ],
+  },
+  {
+    path: "/uninvited",
+    name: "Uninvited",
+    component: () => import("./views/Uninvited"),
   },
   {
     path: "/:notFound(.*)",
@@ -53,5 +72,10 @@ const router = createRouter({
   history: createWebHistory(),
   routes,
 });
+
+// router.beforeEach((to, from, next) => {
+//   console.log(to, from);
+//   next();
+// });
 
 export default router;

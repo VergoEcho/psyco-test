@@ -1,8 +1,4 @@
-import Axios from "axios";
-const axios = Axios.create({
-  baseURL: "https://nervous-mental-stability-test.herokuapp.com/api",
-  // baseURL: "http://localhost:8080/api",
-});
+import axios from "../../axios";
 
 export default {
   state() {
@@ -67,9 +63,10 @@ export default {
         console.log(err);
       }
     },
-    async createQuestion(context, { question, type, answer }) {
+    async createUser(context, email) {
       try {
-        return await axios.post("/questions/", { question, type, answer });
+        console.log(email);
+        return await axios.post("/questions/createUser", { email });
       } catch (err) {
         console.log("error", err);
       }
@@ -82,11 +79,11 @@ export default {
         userBlank = JSON.parse(userBlank);
       }
       userBlank[index] = answer;
-      await localStorage.setItem("userBlank", await JSON.stringify(userBlank));
+      await localStorage.setItem("userBlank", JSON.stringify(userBlank));
     },
     async saveTestResults(context) {
       const user = await context.getters.user;
-      let userAnswers = await localStorage.getItem("userBlank");
+      let userAnswers = localStorage.getItem("userBlank");
       userAnswers = await JSON.parse(userAnswers);
       const test = await context.getters.test;
       let results = {

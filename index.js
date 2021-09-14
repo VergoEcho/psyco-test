@@ -9,6 +9,7 @@ const path = require("path");
 const app = express();
 
 const questionRoute = require("./server/routes/questions.routes");
+const authRoute = require("./server/routes/auth.routes");
 
 app.use(bodyParser.json());
 
@@ -68,6 +69,7 @@ if (process.env.NODE_ENV === "production") {
 }
 
 app.use("/api/questions", questionRoute);
+app.use("/api/auth", authRoute);
 
 // set port, listen for requests
 const PORT = process.env.PORT || 8080 || 8081;

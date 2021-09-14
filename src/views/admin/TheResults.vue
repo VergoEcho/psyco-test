@@ -5,6 +5,8 @@
       v-for="result in results"
       :key="result._id"
       :id="result._id"
+      :passed="result.passed"
+      :invitationLink="result.invitationLink"
       :surname="result.surname"
       :name="result.name"
       :patronymic="result.patronymic"
@@ -34,6 +36,7 @@ export default {
   },
   computed: {
     results() {
+      console.log(this.$store.getters.testResults);
       return this.$store.getters.testResults;
     },
   },

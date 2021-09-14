@@ -6,20 +6,20 @@
 export default {
   computed: {
     user() {
-      let user = this.$store.getters.user
+      let user = this.$store.getters.user;
       if (user) {
         // return  user.name + " " + user.surname
-        return user.surname + " " + user.name + " " + user.patronymic
+        return user.surname + " " + user.name + " " + user.patronymic;
       }
       return "ви неавторизовані";
     },
     visible() {
-      const path = this.$route.path
-      if (path.startsWith("/admin")) {
-        return false
+      const path = this.$route.path;
+      if (path.startsWith("/admin") || path.startsWith("/uninvited")) {
+        return false;
       }
-      return true
-    }
+      return true;
+    },
   },
 };
 </script>
