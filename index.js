@@ -4,6 +4,8 @@ const cors = require("cors");
 const { connect } = require("mongoose");
 const history = require("connect-history-api-fallback");
 const morgan = require("morgan");
+const passport = require("passport");
+const passportJwtStrategy = require("./server/middleware/passport-jwt-strategy");
 const path = require("path");
 
 const app = express();
@@ -55,6 +57,9 @@ let corsOptions = {
 };
 
 app.use(cors(corsOptions));
+
+app.use(passport.initialize());
+passport.use(passportJwtStrategy);
 
 // app.use(bodyParser.urlencoded({ extended: true }));
 console.log("Process env = ", process.env.NODE_ENV);

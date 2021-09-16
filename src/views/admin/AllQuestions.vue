@@ -17,10 +17,7 @@
 </template>
 
 <script>
-import BaseCard from "@/components/BaseCard";
-
 export default {
-  components: { BaseCard },
   data() {
     return {
       loading: false,

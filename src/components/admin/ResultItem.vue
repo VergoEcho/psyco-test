@@ -35,6 +35,7 @@
         </a>
       </span>
     </div>
+    <base-button @click="openDeleteDialog">Видалити результат</base-button>
   </base-card>
 </template>
 
@@ -125,7 +126,6 @@ export default {
       navigator.clipboard.writeText(
         window.location.origin + "/?invitationLink=" + link
       );
-      console.log(this.$refs[id]);
       this.$refs[id].textContent = "завантажено у буфер";
     },
   },

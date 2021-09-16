@@ -24,7 +24,7 @@ export default {
   },
   methods: {
     clearUser() {
-      this.$store.dispatch("clearLocalstorage");
+      this.$store.dispatch("clearLocalUser");
     },
   },
 };

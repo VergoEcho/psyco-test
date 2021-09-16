@@ -9,13 +9,13 @@ const routes = [
     component: Home,
     // eslint-disable-next-line no-unused-vars
     beforeEnter: async (to) => {
-      console.log(to.query.invitationLink);
+      console.log("query link", to.query.invitationLink);
       const allowed = await store.dispatch(
         "checkUser",
         to.query.invitationLink
       );
-      console.log(allowed);
-      console.log(localStorage.getItem("invitationLink"));
+      console.log("allowed", allowed);
+      console.log("LS invitation", localStorage.getItem("invitationLink"));
       if (allowed === false) {
         return { name: "Uninvited" };
       }
@@ -36,6 +36,10 @@ const routes = [
     path: "/results",
     name: "TestResults",
     component: () => import("./views/test/TestResults.vue"),
+  },
+  {
+    path: "/admin/login",
+    component: () => import("./views/admin/AdminLogin"),
   },
   {
     path: "/admin",
@@ -73,9 +77,32 @@ const router = createRouter({
   routes,
 });
 
-// router.beforeEach((to, from, next) => {
-//   console.log(to, from);
-//   next();
-// });
+router.beforeEach(async (to) => {
+  if (to.fullPath.startsWith("/admin") && to.path !== "/admin/login") {
+    // console.log("/admin", to);
+    if (store.getters.isAdmin) {
+      return true;
+    }
+    return "/admin/login";
+  } else if (
+    to.path === "/" ||
+    to.path === "/uninvited" ||
+    to.path === "/results" ||
+    to.path === "/admin/login"
+  ) {
+    // console.log("/", to);
+    return true;
+  } else {
+    let token = await store.getters.invitationLink;
+    // console.log("checkUser", to, token);
+    let allowed = await store.dispatch("checkUser", token);
+    if (allowed) {
+      return true;
+    } else {
+      // console.log("not allowed");
+      return "/uninvited";
+    }
+  }
+});
 
 export default router;

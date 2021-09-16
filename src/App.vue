@@ -15,6 +15,7 @@ export default {
   },
   created() {
     this.$store.dispatch("loadUserFromLocalStorage");
+    this.$store.dispatch("loadAdminTokenFromLocalStorage");
   },
 };
 </script>

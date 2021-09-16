@@ -36,7 +36,6 @@ export default {
   },
   computed: {
     results() {
-      console.log(this.$store.getters.testResults);
       return this.$store.getters.testResults;
     },
   },

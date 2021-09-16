@@ -2,9 +2,6 @@
   <base-card id="results">
     <h2>Дякую за проходження тесту!</h2>
   </base-card>
-  <router-link to="/">
-    <base-button>На головну сторінку</base-button>
-  </router-link>
 </template>
 
 <style scoped>

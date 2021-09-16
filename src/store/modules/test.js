@@ -65,7 +65,6 @@ export default {
     },
     async createUser(context, email) {
       try {
-        console.log(email);
         return await axios.post("/questions/createUser", { email });
       } catch (err) {
         console.log("error", err);
@@ -102,12 +101,17 @@ export default {
           }
         }
       }
-      await axios.post("/questions/saveTestResults", { user, results });
+      const token = await context.getters.invitationLink;
+      await axios.put("/questions/saveTestResults", {
+        user,
+        results,
+        invitationLink: token,
+      });
     },
-    async loadTestResults(context) {
+    async loadTestResults(context, force = false) {
       try {
         const results = context.getters.testResults;
-        if (results.length === 0) {
+        if (results.length === 0 || force) {
           const results = await axios.get("/questions/testResults");
           context.commit("setTestResults", results.data);
         }
@@ -118,7 +122,9 @@ export default {
     async removeResult(context, id) {
       let testResults = context.getters.testResults;
       testResults = await testResults.filter((result) => {
-        if (result._id === id) return false;
+        if (result._id !== id) {
+          return true;
+        }
       });
       await axios.delete(`questions/testResults/${id}`);
       context.commit("setTestResults", testResults);
