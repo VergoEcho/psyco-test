@@ -46,9 +46,12 @@ export default {
     async registerAdmin(context, { login, password }) {
       await axios.post("/auth/admin/register", { login, password });
     },
+    // async authUser(context, user) {
+    //   context.commit("setUser", user);
+    //   await localStorage.setItem("user", JSON.stringify(user));
+    // },
     async authUser(context, user) {
-      context.commit("setUser", user);
-      await localStorage.setItem("user", JSON.stringify(user));
+      await axios.post("/auth/sendMail", { user });
     },
     async loadUserFromLocalStorage(context) {
       let user = localStorage.getItem("user");

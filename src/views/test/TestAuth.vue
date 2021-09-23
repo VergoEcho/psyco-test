@@ -3,6 +3,15 @@
     <base-card id="auth">
       <h2>Авторизація</h2>
       <div class="form-fields">
+        <div class="input-group" :class="{ error: email.isInvalid }">
+          <label for="email">E-mail</label>
+          <input
+            @blur="clearValidity('email')"
+            type="email"
+            id="email"
+            v-model.trim="email.value"
+          />
+        </div>
         <div class="input-group" :class="{ error: surname.isInvalid }">
           <label for="surname">Прізвище</label>
           <input
@@ -77,6 +86,10 @@
 export default {
   data() {
     return {
+      email: {
+        value: "",
+        isInvalid: false,
+      },
       surname: {
         value: "",
         isInvalid: false,
@@ -118,6 +131,7 @@ export default {
       }
 
       const user = {
+        email: this.email.value,
         surname: this.surname.value,
         name: this.name.value,
         patronymic: this.patronymic.value,
@@ -128,10 +142,14 @@ export default {
 
       await this.$store.dispatch("authUser", user);
 
-      this.startTest();
+      // this.startTest();
     },
     validateForm() {
       this.formIsInvalid = false;
+      if (this.email.value === "") {
+        this.email.isInvalid = true;
+        this.formIsInvalid = true;
+      }
       if (this.surname.value === "") {
         this.surname.isInvalid = true;
         this.formIsInvalid = true;

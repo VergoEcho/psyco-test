@@ -4,7 +4,7 @@ import store from "./store/index";
 
 const routes = [
   {
-    path: "/",
+    path: "/home",
     name: "Home",
     component: Home,
     // eslint-disable-next-line no-unused-vars
@@ -22,7 +22,7 @@ const routes = [
     },
   },
   {
-    path: "/auth",
+    path: "/",
     name: "UserAuth",
     component: () => import("./views/test/TestAuth"),
   },
