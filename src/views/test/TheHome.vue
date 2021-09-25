@@ -9,7 +9,7 @@
   <div v-if="user" class="button">
     <base-button @click="clearUser">Стерти поточного користувача</base-button>
   </div>
-  <router-link class="button" to="/auth">
+  <router-link class="button" to="/test/0">
     <base-button>Почати тестування</base-button>
   </router-link>
 </template>
@@ -22,9 +22,13 @@ export default {
       return this.$store.getters.user;
     },
   },
+  created() {
+    this.$store.dispatch("loadUserFromLocalStorage");
+  },
   methods: {
     clearUser() {
       this.$store.dispatch("clearLocalUser");
+      this.$router.push("/");
     },
   },
 };

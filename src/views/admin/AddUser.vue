@@ -1,6 +1,6 @@
 <template>
   <base-card id="newUser">
-    <div class="mt">Введіть E-mail нового користувача</div>
+    <div class="mt">Введіть дані нового адміністратора</div>
     <form>
       <div class="input-group mt">
         <input
@@ -13,7 +13,7 @@
           placeholder="username@mail.com"
         />
       </div>
-      <div v-if="type === 'admin'" class="input-group mt">
+      <div class="input-group mt">
         <input
           autocomplete="current-password"
           type="password"
@@ -24,31 +24,10 @@
           placeholder="password"
         />
       </div>
-      <section class="mt">
-        <div>
-          <input
-            v-model="type"
-            checked
-            id="unbalanced"
-            value="user"
-            type="radio"
-            name="type"
-          />
-          <label for="unbalanced">Курсант</label>
-        </div>
-        <div>
-          <input
-            v-model="type"
-            value="admin"
-            id="frankness"
-            type="radio"
-            name="type"
-          />
-          <label for="frankness">Адмін</label>
-        </div>
-      </section>
     </form>
-    <base-button class="mt" @click="createUser">Додати користувача</base-button>
+    <base-button class="mt" @click="createAdmin"
+      >Додати адміністратора</base-button
+    >
   </base-card>
 </template>
 
@@ -59,25 +38,19 @@ export default {
       email: { value: "", isInvalid: false },
       password: { value: "", isInvalid: false },
       formIsInvalid: false,
-      type: "user",
     };
   },
   methods: {
-    async createUser() {
+    async createAdmin() {
       await this.validateForm();
       if (this.formIsInvalid) {
         return;
       }
-      if (this.type === "admin") {
-        await this.$store.dispatch("registerAdmin", {
-          login: this.email.value,
-          password: this.password.value,
-        });
-        this.password.value = "";
-      } else {
-        await this.$store.dispatch("createUser", this.email.value);
-        await this.$store.dispatch("loadTestResults", { force: true });
-      }
+      await this.$store.dispatch("registerAdmin", {
+        login: this.email.value,
+        password: this.password.value,
+      });
+      this.password.value = "";
       this.email.value = "";
     },
     validateForm() {

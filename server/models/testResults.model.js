@@ -6,14 +6,6 @@ const resultsSchema = new Schema({
     unique: true,
     required: true,
   },
-  invitationLink: {
-    type: String,
-    required: true,
-  },
-  passed: {
-    type: Boolean,
-    default: false,
-  },
   date: {
     type: Date,
     default: Date.now,

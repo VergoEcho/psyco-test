@@ -63,13 +63,6 @@ export default {
         console.log(err);
       }
     },
-    async createUser(context, email) {
-      try {
-        return await axios.post("/questions/createUser", { email });
-      } catch (err) {
-        console.log("error", err);
-      }
-    },
     async addUserAnswerToBlank(context, { index, answer }) {
       let userBlank = localStorage.getItem("userBlank");
       if (userBlank === null) {
@@ -102,8 +95,7 @@ export default {
         }
       }
       const token = await context.getters.invitationLink;
-      await axios.put("/questions/saveTestResults", {
-        user,
+      await axios.post("/questions/saveTestResults", {
         results,
         invitationLink: token,
       });

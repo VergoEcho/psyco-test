@@ -27,6 +27,11 @@ const routes = [
     component: () => import("./views/test/TestAuth"),
   },
   {
+    path: "/mailSent",
+    name: "MailSent",
+    component: () => import("./views/test/TestMailSent"),
+  },
+  {
     path: "/test/:questionIndex",
     name: "TestForm",
     component: () => import("./views/test/TestForm.vue"),
@@ -86,6 +91,8 @@ router.beforeEach(async (to) => {
     return "/admin/login";
   } else if (
     to.path === "/" ||
+    to.path === "/mailSent" ||
+    to.path === "/home" ||
     to.path === "/uninvited" ||
     to.path === "/results" ||
     to.path === "/admin/login"

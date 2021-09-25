@@ -54,8 +54,9 @@ export default {
       await axios.post("/auth/sendMail", { user });
     },
     async loadUserFromLocalStorage(context) {
-      let user = localStorage.getItem("user");
-      user = await JSON.parse(user);
+      let jwtUser = localStorage.getItem("invitationLink");
+      const user = jwtDecode(jwtUser) || {};
+      console.log(user);
       context.commit("setUser", user);
     },
     async checkUser(context, invitationLink) {

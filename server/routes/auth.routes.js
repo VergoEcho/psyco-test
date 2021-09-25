@@ -5,72 +5,67 @@ const jwt = require("jsonwebtoken");
 const passport = require("passport");
 const nodemailer = require("nodemailer");
 
-const Result = require("../models/testResults.model");
 const Admin = require("../models/admin.model");
+const InvitationLink = require("../models/invitatitonLink.model");
 
 const keys = require("../keys");
 
-let smtpTransport = nodemailer.createTransport({
+const smtpTransport = nodemailer.createTransport({
   service: "Gmail",
   auth: {
     user: "psychotest7@gmail.com",
     pass: "psychopass",
   },
 });
-var rand, mailOptions, host, link;
 
-router.post("/sendMail", function (req, res) {
-  console.log("inside send", req.body.user);
-  res.sendStatus(200);
-  // rand = Math.floor(Math.random() * 100 + 54);
-  // host = req.get("host");
-  // link = "http://" + req.get("host") + "/verify?id=" + rand;
-  // console.log("to", req.query.to);
-  // mailOptions = {
-  //   to: req.query.to,
-  //   subject: "Please confirm your Email account",
-  //   html:
-  //     "Hello,<br> Please Click on the link to verify your email.<br><a href=" +
-  //     link +
-  //     ">Click here to verify</a>",
-  // };
-  // console.log(mailOptions);
-  // smtpTransport.sendMail(mailOptions, function (error, response) {
-  //   if (error) {
-  //     console.log(error);
-  //     res.end("error");
-  //   } else {
-  //     console.log("Message sent: " + response.message);
-  //     res.end("sent");
-  //   }
-  // });
-});
+router.post("/sendMail", async (req, res) => {
+  try {
+    console.log("inside send", req.body.user);
+    const userJwt = jwt.sign(req.body.user, keys.jwtKey, {
+      expiresIn: 60 * 60 * 24 * 2,
+    });
+    const port = req.hostname === "localhost" ? ":8081" : "";
+    const link =
+      req.protocol +
+      "://" +
+      req.hostname +
+      port +
+      "/home?invitationLink=" +
+      userJwt;
+    console.log(link);
+    console.log("to", req.body.user.email);
 
-router.get("/verify", function (req, res) {
-  console.log(req.protocol + ":/" + req.get("host"));
-  if (req.protocol + "://" + req.get("host") === "http://" + host) {
-    console.log("Domain is matched. Information is from Authentic email");
-    if (req.query.id === rand) {
-      console.log("email is verified");
-      res.end("<h1>Email " + mailOptions.to + " is been Successfully verified");
-    } else {
-      console.log("email is not verified");
-      res.end("<h1>Bad Request</h1>");
+    const invitationLink = new InvitationLink({ link: userJwt });
+    console.log(invitationLink.link);
+    const alreadyInBase = await InvitationLink.exists({
+      link: invitationLink.link,
+    });
+    if (!alreadyInBase) {
+      await invitationLink.save();
     }
-  } else {
-    res.end("<h1>Request is from unknown source");
+
+    const mailOptions = {
+      to: req.body.user.email,
+      subject: "Оцінка рівня нервово-психічної стійкості",
+      html:
+        "Щоб почати тестування перейдіть за <a href=" +
+        link +
+        ">посиланням</a>",
+    };
+    await smtpTransport.sendMail(mailOptions);
+    res.sendStatus(200);
+  } catch (e) {
+    console.error(e);
+    res.status(500).json(e);
   }
 });
 
 router.post("/checkUser", async (req, res) => {
   try {
     const invitationLink = req.body.invitationLink;
-    const userIsChecked = await Result.exists({
-      invitationLink,
-      passed: false,
+    const userIsChecked = await InvitationLink.exists({
+      link: invitationLink,
     });
-    console.log("il", invitationLink);
-    console.log("user", userIsChecked);
 
     res.status(200).send({ userIsChecked: userIsChecked });
   } catch (error) {

@@ -78,7 +78,12 @@
     <base-button v-if="user" @click="startTest" type="button">
       Продовжити з поточним користувачем
     </base-button>
-    <base-button> Авторизуватись</base-button>
+    <div v-if="user" class="button">
+      <base-button @click="clearUser">Стерти поточного користувача</base-button>
+    </div>
+    <base-button :disabled="loading">
+      {{ loading ? "Завантаження..." : "Авторизуватись" }}
+    </base-button>
   </form>
 </template>
 
@@ -86,6 +91,7 @@
 export default {
   data() {
     return {
+      loading: false,
       email: {
         value: "",
         isInvalid: false,
@@ -124,9 +130,14 @@ export default {
   },
   methods: {
     async submitForm() {
+      if (this.loading) {
+        return;
+      }
+      this.loading = true;
       await this.validateForm();
 
       if (this.formIsInvalid) {
+        this.loading = false;
         return;
       }
 
@@ -141,8 +152,7 @@ export default {
       };
 
       await this.$store.dispatch("authUser", user);
-
-      // this.startTest();
+      await this.$router.push("/mailSent");
     },
     validateForm() {
       this.formIsInvalid = false;
@@ -190,6 +200,9 @@ export default {
       if (this.phone.value === "+") {
         this.phone.value = "";
       }
+    },
+    clearUser() {
+      this.$store.dispatch("clearLocalUser");
     },
   },
 };

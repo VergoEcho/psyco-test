@@ -32,6 +32,7 @@ a {
 
 a:hover {
   border-bottom: 2px solid gray;
+  cursor: pointer;
 }
 
 .router-link-exact-active {
