@@ -26,8 +26,8 @@ router.post("/sendMail", async (req, res) => {
     });
     const port = req.hostname === "localhost" ? ":8081" : "";
     const link =
-      req.protocol +
-      "://" +
+      // req.protocol +
+      "https://" +
       req.hostname +
       port +
       "/home?invitationLink=" +
