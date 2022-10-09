@@ -79,6 +79,8 @@ router.post("/admin/login", async (req, res) => {
   try {
     console.log(req.body.login);
     const candidate = await Admin.findOne({ login: req.body.login });
+    console.log(await Admin.find());
+    console.log(candidate);
 
     if (candidate) {
       const isPasswordCorrect = bcrypt.compareSync(
