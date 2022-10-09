@@ -75,44 +75,44 @@ router.post("/checkUser", async (req, res) => {
   }
 });
 
-router.post("/admin/login", async (req, res) => {
-  try {
-    console.log(req.body.login);
-    const candidate = await Admin.findOne({ login: req.body.login });
-    console.log(await Admin.find());
-    console.log(candidate);
-
-    if (candidate) {
-      const isPasswordCorrect = bcrypt.compareSync(
-        req.body.password,
-        candidate.password
-      );
-      if (isPasswordCorrect) {
-        const token = jwt.sign(
-          {
-            login: candidate.login,
-            userId: candidate._id,
-          },
-          keys.jwtKey,
-          { expiresIn: 60 * 60 * 24 * 2 }
-        );
-        res.json({ token });
-      } else {
-        console.log("password ");
-        res.sendStatus(404);
-      }
-    } else {
-      console.log("admin not found");
-      res.sendStatus(404);
-    }
-  } catch (error) {
-    console.log("error: ", error);
-    res.status(500).json(error);
-  }
-});
+// router.post("/admin/login", async (req, res) => {
+//   try {
+//     console.log(req.body.login);
+//     const candidate = await Admin.findOne({ login: req.body.login });
+//     console.log(await Admin.find());
+//     console.log(candidate);
+//
+//     if (candidate) {
+//       const isPasswordCorrect = bcrypt.compareSync(
+//         req.body.password,
+//         candidate.password
+//       );
+//       if (isPasswordCorrect) {
+//         const token = jwt.sign(
+//           {
+//             login: candidate.login,
+//             userId: candidate._id,
+//           },
+//           keys.jwtKey,
+//           { expiresIn: 60 * 60 * 24 * 2 }
+//         );
+//         res.json({ token });
+//       } else {
+//         console.log("password ");
+//         res.sendStatus(404);
+//       }
+//     } else {
+//       console.log("admin not found");
+//       res.sendStatus(404);
+//     }
+//   } catch (error) {
+//     console.log("error: ", error);
+//     res.status(500).json(error);
+//   }
+// });
 
 router.post(
-  "/admin/register",
+  "/admin/login",
   passport.authenticate("jwt", { session: false }),
   async (req, res) => {
     try {
