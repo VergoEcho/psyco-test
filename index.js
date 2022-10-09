@@ -21,7 +21,8 @@ morgan.token("id", function getId(req) {
 app.use(morgan(":id :method :url :response-time"));
 
 connect(
-  "mongodb+srv://vergo:psychopassport@cluster0.1g1td.mongodb.net/psychoTestDB?retryWrites=true&w=majority",
+  "mongodb+srv://vergo:psychopassport@cluster0.1g1td.mongodb.net/?retryWrites=true&w=majority",
+  // "mongodb+srv://vergo:psychopassport@cluster0.1g1td.mongodb.net/psychoTestDB?retryWrites=true&w=majority",
   {
     useNewUrlParser: true,
     useUnifiedTopology: true,
