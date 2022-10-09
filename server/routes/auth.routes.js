@@ -76,6 +76,7 @@ router.post("/checkUser", async (req, res) => {
 
 router.post("/admin/login", async (req, res) => {
   try {
+    console.log(req.body.login);
     const candidate = await Admin.findOne({ login: req.body.login });
 
     if (candidate) {
